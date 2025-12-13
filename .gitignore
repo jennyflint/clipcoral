@@ -23,3 +23,6 @@ composer.lock
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
+
+# ini config for xdebug
+/.docker/php/xdebug.ini

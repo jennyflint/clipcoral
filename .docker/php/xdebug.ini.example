@@ -1,0 +1,8 @@
+[xdebug]
+xdebug.mode=debug,develop
+xdebug.start_with_request=yes
+xdebug.client_port=9008
+xdebug.discover_client_host=1
+xdebug.client_host=host.docker.internal
+xdebug.log=/tmp/xdebug.log
+xdebug.log_level=7

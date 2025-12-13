@@ -5,53 +5,23 @@ a popular debugger and profiler for PHP.
 
 Because it has a significant performance overhead, the step-by-step debugger
 is disabled by default.
-It can be enabled by setting the `XDEBUG_MODE` environment variable to `debug`.
 
-On Linux and Mac:
+1ю You need to create a file `xdebug.ini` in the `.docker/php` directory.
+2. Add parameters to the ini file an example file can be found in the `.docker/php/xdebug.ini.example` directory.
 
-```console
-XDEBUG_MODE=debug docker compose up --wait
+
+```
+[xdebug]
+xdebug.mode=debug,develop
+xdebug.start_with_request=yes
+xdebug.client_port=9008
+xdebug.discover_client_host=1
+xdebug.client_host=host.docker.internal
+xdebug.log=/tmp/xdebug.log
+xdebug.log_level=7
 ```
 
-On Windows:
-
-```console
-set XDEBUG_MODE=debug&& docker compose up --wait&set XDEBUG_MODE=
-```
-
-## Debugging with Xdebug and PhpStorm
-
-First, [create a PHP debug remote server configuration](https://www.jetbrains.com/help/phpstorm/creating-a-php-debug-server-configuration.html):
-
-1. In the `Settings/Preferences` dialog, go to `PHP | Servers`
-2. Create a new server:
-   - Name: `symfony` (or whatever you want to use for the variable `PHP_IDE_CONFIG`)
-   - Host: `localhost` (or the one defined using the `SERVER_NAME` environment variable)
-   - Port: `443`
-   - Debugger: `Xdebug`
-   - Check `Use path mappings`
-   - Absolute path on the server: `/app`
-
-You can now use the debugger!
-
-1. In PhpStorm, open the `Run` menu and click on `Start Listening for PHP Debug Connections`
-2. Add the `XDEBUG_SESSION=PHPSTORM` query parameter to the URL of
-   the page you want to debug, or use [other available triggers](https://xdebug.org/docs/step_debug#activate_debugger)
-
-   Alternatively, you can use [the **Xdebug extension**](https://xdebug.org/docs/step_debug#browser-extensions)
-   for your preferred web browser.
-
-3. On command line, we might need to tell PhpStorm which
-   [path mapping configuration](https://www.jetbrains.com/help/phpstorm/zero-configuration-debugging-cli.html#configure-path-mappings)
-   should be used, set the value of the PHP_IDE_CONFIG environment variable to
-   `serverName=symfony`, where `symfony` is the name of the debug server configured
-   higher.
-
-   Example:
-
-   ```console
-   XDEBUG_SESSION=1 PHP_IDE_CONFIG="serverName=symfony" php bin/console ...
-   ```
+3. Run docker command `docker compose down` and `docker compose up -d`
 
 ## Debugging with Xdebug and Visual Studio Code
 
@@ -69,7 +39,7 @@ You can now use the debugger!
          "name": "Listen for Xdebug",
          "type": "php",
          "request": "launch",
-         "port": 9003,
+         "port": 9008,
          "pathMappings": {
            "/app": "${workspaceFolder}"
          }
