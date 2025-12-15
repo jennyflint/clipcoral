@@ -3,3 +3,16 @@ grumphp:
         phpcsfixer:
             config: .php-cs-fixer.dist.php
             allow_risky: true
+        git_blacklist:
+            keywords:
+                - "var_dump\\s*\\("
+                - "dd\\s*\\("
+                - "dump\\s*\\("
+                - "die\\s*\\("  
+                - "exit;"
+                - "print_r\\s*\\("
+            whitelist_patterns: []
+            triggered_by: ['php', 'twig']
+            regexp_type: P
+            match_word: false
+            ignore_patterns: []
