@@ -5,15 +5,16 @@ grumphp:
             allow_risky: true
         git_blacklist:
             keywords:
-                - "var_dump\\s*\\("
-                - "dd\\s*\\("
-                - "dump\\s*\\("
-                - "die\\s*\\("  
-                - "exit;"
-                - "print_r\\s*\\("
+                - '\bdd\s*\('
+                - '\bvar_dump\s*\('
+                - '\bdump\s*\('
+                - '\bprint_r\s*\('
+                - '\bdie\s*\('
+                - '\bdie\s*;'
+                - '\bexit\s*;'
             whitelist_patterns: []
             triggered_by: ['php', 'twig']
-            regexp_type: P
+            regexp_type: E
             match_word: false
             ignore_patterns: []
         phpstan:
