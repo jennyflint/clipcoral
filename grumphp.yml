@@ -20,4 +20,5 @@ grumphp:
             configuration: phpstan.neon
             level: 6
             triggered_by: ['php']
+            use_grumphp_paths: true
             memory_limit: "-1"

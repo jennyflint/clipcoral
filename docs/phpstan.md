@@ -10,3 +10,5 @@
  `vendor/bin/phpstan analyse`
  - OR
  `vendor/bin/phpstan analyse --memory-limit=2G`
+
+ 

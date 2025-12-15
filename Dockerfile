@@ -31,6 +31,9 @@ RUN set -eux; \
 		zip \
 	;
 
+RUN apt-get update && apt-get install -y libxml2-dev \
+    && docker-php-ext-install xml
+
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
