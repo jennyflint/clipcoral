@@ -42,6 +42,7 @@
         "allow-plugins": {
             "php-http/discovery": true,
             "phpro/grumphp": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
         },
@@ -95,6 +96,9 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.91",
         "phpro/grumphp": "^2.18",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-symfony": "^2.0",
         "symfony/maker-bundle": "^1.65.1"
     }
 }

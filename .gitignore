@@ -26,3 +26,6 @@ composer.lock
 
 # ini config for xdebug
 /.docker/php/xdebug.ini
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###

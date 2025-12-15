@@ -16,3 +16,8 @@ grumphp:
             regexp_type: P
             match_word: false
             ignore_patterns: []
+        phpstan:
+            configuration: phpstan.neon
+            level: 6
+            triggered_by: ['php']
+            memory_limit: "-1"
