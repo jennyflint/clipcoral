@@ -31,7 +31,7 @@ return (new Config())
 
         // --- MODERN PHP MIGRATION ---
         // Migrates syntax to PHP 8.4 (safe changes)
-        '@PHP84Migration' => true,
+        '@PHP8x4Migration' => true,
 
         // --- STRICT TYPES ---
         // Forces `declare(strict_types=1);` at the top of every file
@@ -58,7 +58,7 @@ return (new Config())
             'keep_multiple_spaces_after_comma' => false,
         ],
         // Ensures single space after type hint
-        'function_typehint_space' => true,
+        'type_declaration_spaces' => true,
         // Removes space before colon in return type
         'return_type_declaration' => ['space_before' => 'none'],
 
