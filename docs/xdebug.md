@@ -6,7 +6,7 @@ a popular debugger and profiler for PHP.
 Because it has a significant performance overhead, the step-by-step debugger
 is disabled by default.
 
-1ю You need to create a file `xdebug.ini` in the `.docker/php` directory.
+1. You need to create a file `xdebug.ini` in the `.docker/php` directory.
 2. Add parameters to the ini file an example file can be found in the `.docker/php/xdebug.ini.example` directory.
 
 

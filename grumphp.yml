@@ -1,8 +1,25 @@
 grumphp:
     tasks:
+        rector:
+            config: 'rector.php'
+            triggered_by: ['php']
+            clear_cache: true
+            no_diffs: false
+            metadata:
+                priority: 100 
         phpcsfixer:
             config: .php-cs-fixer.dist.php
             allow_risky: true
+            metadata:
+                priority: 50 
+        phpstan:
+            configuration: phpstan.neon
+            level: 6
+            triggered_by: ['php']
+            use_grumphp_paths: true
+            memory_limit: "-1"
+            metadata:
+                priority: 10 
         git_blacklist:
             keywords:
                 - '\bdd\s*\('
@@ -17,9 +34,3 @@ grumphp:
             regexp_type: E
             match_word: false
             ignore_patterns: []
-        phpstan:
-            configuration: phpstan.neon
-            level: 6
-            triggered_by: ['php']
-            use_grumphp_paths: true
-            memory_limit: "-1"

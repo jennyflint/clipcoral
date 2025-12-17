@@ -81,6 +81,11 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "auto-refactor": [
+            "vendor/bin/rector process",
+            "vendor/bin/php-cs-fixer fix --allow-risky=yes",
+            "vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=2G"
         ]
     },
     "conflict": {
@@ -100,6 +105,7 @@
         "phpstan/phpstan": "^2.1.33",
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-symfony": "^2.0.9",
+        "rector/rector": "^2.2",
         "symfony/maker-bundle": "^1.65.1"
     }
 }
