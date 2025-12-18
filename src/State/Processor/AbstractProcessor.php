@@ -30,28 +30,25 @@ abstract class AbstractProcessor implements ProcessorInterface
     abstract public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): object;
 
     /**
-     * @param array<string, int> $uriVariables
+     * @template T of object
+     *
+     * @param array<string, mixed> $uriVariables
+     * @param class-string<T>      $entityClass
+     *
+     * @return T
      */
     protected function getEntity(array $uriVariables, string $entityClass): object
     {
-        if (isset($uriVariables['id'])) {
-            /** @var class-string $entityClass */
-            $entity = $this->entityManager->find($entityClass, $uriVariables['id']);
+        $id = $uriVariables['id'] ?? null;
+        $entity = $id ? $this->entityManager->find($entityClass, $id) : new $entityClass();
 
-            if (!$entity) {
-                throw new NotFoundHttpException('Record not found');
-            }
-        } else {
-            $entity = new $entityClass();
+        if (!$entity) {
+            throw new NotFoundHttpException();
+        }
 
-            if ($entity instanceof HasUserInterface) {
-                $user = $this->security->getUser();
-                if (!$user || !$user instanceof User) {
-                    throw new UserNotFoundException('User must be logged in to create this entity.');
-                }
-
-                $entity->setUser($user);
-            }
+        if (!$id && $entity instanceof HasUserInterface) {
+            $user = $this->security->getUser();
+            $user instanceof User ? $entity->setUser($user) : throw new UserNotFoundException();
         }
 
         return $entity;

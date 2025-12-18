@@ -11,7 +11,7 @@ if (class_exists(Dotenv::class) && file_exists(__DIR__ . '/../.env')) {
     new Dotenv()->bootEnv(__DIR__ . '/../.env');
 }
 
-$env = $_SERVER['APP_ENV'] ?? 'dev';
+$env = is_string($_SERVER['APP_ENV']) ? $_SERVER['APP_ENV'] : 'dev';
 $debug = (bool) ($_SERVER['APP_DEBUG'] ?? true);
 
 $kernel = new Kernel($env, $debug);

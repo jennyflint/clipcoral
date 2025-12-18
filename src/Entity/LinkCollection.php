@@ -1,54 +1,52 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use App\Repository\LinkCollectionRepository;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
-use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Post;
 use App\DTO\ApiPlatform\LinkCollection\LinkCollectionCreateDto;
 use App\DTO\ApiPlatform\LinkCollection\LinkCollectionDto as LinkCollectionUpdateDto;
 use App\Interfaces\Entity\HasUserInterface;
+use App\Repository\LinkCollectionRepository;
 use App\State\Processor\LinkCollection\LinkCollectionProcessor;
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ApiResource(
-    routePrefix: '/v1',
-    normalizationContext: ['groups' => ['link-collection:read']],
-    denormalizationContext: ['groups' => ['link-collection:write']],
-    operations: [
-        new Get(
-            security: "is_granted('IS_OWNER', object)",
-        ),
-        new GetCollection(),
-        new Post(
-            input: LinkCollectionCreateDto::class,
-            processor: LinkCollectionProcessor::class
-        ),
-        new Patch(
-            input: LinkCollectionUpdateDto::class,
-            processor: LinkCollectionProcessor::class,
-            security: "is_granted('IS_OWNER', object)",
-        ),
-        new Delete(
-            security: "is_granted('IS_OWNER', object)",
-        )
-    ]
-)]
+#[ApiResource(operations: [
+    new Get(
+        security: "is_granted('IS_OWNER', object)",
+    ),
+    new GetCollection(),
+    new Post(
+        input: LinkCollectionCreateDto::class,
+        processor: LinkCollectionProcessor::class,
+    ),
+    new Patch(
+        security: "is_granted('IS_OWNER', object)",
+        input: LinkCollectionUpdateDto::class,
+        processor: LinkCollectionProcessor::class,
+    ),
+    new Delete(
+        security: "is_granted('IS_OWNER', object)",
+    ),
+], routePrefix: '/v1', normalizationContext: ['groups' => ['link-collection:read']], denormalizationContext: ['groups' => ['link-collection:write']])]
 #[ORM\Entity(repositoryClass: LinkCollectionRepository::class)]
 #[ORM\Table(name: '`link_collections`')]
 #[Gedmo\SoftDeleteable(fieldName: 'deletedAt', timeAware: false)]
 class LinkCollection implements HasUserInterface
 {
-    use TimestampableEntity;
     use SoftDeleteableEntity;
+
+    use TimestampableEntity;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -58,7 +56,7 @@ class LinkCollection implements HasUserInterface
 
     #[ORM\Column(length: 255)]
     #[Groups(['link-collection:read'])]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['link-collection:read'])]
@@ -66,7 +64,7 @@ class LinkCollection implements HasUserInterface
 
     #[ORM\ManyToOne(inversedBy: 'linkCollections')]
     #[ORM\JoinColumn(name: 'user_id', nullable: false)]
-    private ?User $user = null;
+    private User $user;
 
     #[ORM\Column(length: 7, nullable: true)]
     #[Groups(['link-collection:read'])]
@@ -75,7 +73,7 @@ class LinkCollection implements HasUserInterface
     #[ORM\Column(length: 255, unique: true)]
     #[Gedmo\Slug(fields: ['name'], updatable: false)]
     #[Groups(['link-collection:read'])]
-    private ?string $slug = null;
+    private string $slug;
 
     public function getId(): ?int
     {
@@ -111,7 +109,7 @@ class LinkCollection implements HasUserInterface
         return $this->user;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(User $user): static
     {
         $this->user = $user;
 
@@ -130,7 +128,7 @@ class LinkCollection implements HasUserInterface
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }
