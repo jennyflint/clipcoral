@@ -29,7 +29,11 @@ command:
 ```console
 docker compose -f compose.yaml -f compose.prod.yaml build --pull --no-cache
 ```
+OR enter in cmd
 
+```console
+sudo chown -R $USER:$USER /var/www/clipcoral
+```
 ### Why Application Outputs `phpinfo()`?
 
 Both dev and prod images have the same image tag (`<...>app-php:latest`).

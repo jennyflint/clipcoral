@@ -19,7 +19,7 @@ grumphp:
             use_grumphp_paths: true
             memory_limit: "-1"
             metadata:
-                priority: 10 
+                priority: 10
         git_blacklist:
             keywords:
                 - '\bdd\s*\('
