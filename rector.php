@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\LevelSetList;
-use Rector\Set\ValueObject\SetList;
 
 return RectorConfig::configure()
     // 1. Paths to the code to analyze
@@ -21,19 +20,16 @@ return RectorConfig::configure()
     // 3. Symfony Container integration (CRITICALLY IMPORTANT)
     // This allows Rector to understand your service types and injection
     ->withSymfonyContainerXml(__DIR__ . '/var/cache/dev/App_KernelDevDebugContainer.xml')
+    ->withComposerBased(symfony: true, doctrine: true, phpunit: true)
+    ->withAttributesSets(symfony: true, phpunit: true, doctrine: true)
 
     // 4. Rule Sets
     ->withSets([
         // --- PHP Version ---
-        // Upgrade code to PHP 8.2 features (readonly, enums, new in initializers)
+        // Upgrade code to PHP 8.4 features (readonly, enums, new in initializers)
         LevelSetList::UP_TO_PHP_84,
-
-        // --- General Code Quality ---
-        SetList::CODE_QUALITY,      // Simplify if/else, optimize constructs
-        SetList::DEAD_CODE,         // Remove unused methods/constants/variables
-        SetList::TYPE_DECLARATION,  // Add types (string, int, object) where it is obvious
-        SetList::EARLY_RETURN,      // Replace nested ifs with early returns
     ])
+    ->withPreparedSets(deadCode: true, codeQuality: true, typeDeclarations: true, earlyReturn: true, privatization: true)
 
     // 5. Exclusions (Skip)
     // Here we specify folders or specific rules to ignore

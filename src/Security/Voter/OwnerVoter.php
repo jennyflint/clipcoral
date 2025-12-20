@@ -24,6 +24,7 @@ final class OwnerVoter extends Voter
     protected function voteOnAttribute(string $attribute, mixed $entity, TokenInterface $token, ?\Symfony\Component\Security\Core\Authorization\Voter\Vote $vote = null): bool
     {
         $user = $token->getUser();
+
         if (!$user instanceof UserInterface) {
             return false;
         }
