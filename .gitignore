@@ -29,3 +29,7 @@ composer.lock
 ###> phpstan/phpstan ###
 phpstan.neon
 ###< phpstan/phpstan ###
+
+### > frontend folder if you want build front app inside backend repo ###
+/frontend
+###
