@@ -56,9 +56,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: LinkCollection::class, mappedBy: 'user_id', orphanRemoval: true)]
     private Collection $linkCollections;
 
+    /**
+     * @var Collection<int, Link>
+     */
+    #[ORM\OneToMany(targetEntity: Link::class, mappedBy: 'user_id', orphanRemoval: true)]
+    private Collection $links;
+
     public function __construct()
     {
         $this->linkCollections = new ArrayCollection();
+        $this->links = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -158,7 +165,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\PrePersist]
     public function setCreatedAtValue(): void
     {
-        $this->updatedAt = new DateTime();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     /**
@@ -191,6 +198,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeLinkCollection(LinkCollection $linkCollection): static
     {
         $this->linkCollections->removeElement($linkCollection);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Link>
+     */
+    public function getLinks(): Collection
+    {
+        return $this->links;
+    }
+
+    public function addLink(Link $link): static
+    {
+        if (!$this->links->contains($link)) {
+            $this->links->add($link);
+            $link->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLink(Link $link): static
+    {
+        $this->links->removeElement($link);
 
         return $this;
     }

@@ -15,6 +15,8 @@ use App\DTO\ApiPlatform\LinkCollection\LinkCollectionDto as LinkCollectionUpdate
 use App\Interfaces\Entity\HasUserInterface;
 use App\Repository\LinkCollectionRepository;
 use App\State\Processor\LinkCollection\LinkCollectionProcessor;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
@@ -74,6 +76,17 @@ class LinkCollection implements HasUserInterface
     #[Gedmo\Slug(fields: ['name'], updatable: false)]
     #[Groups(['link-collection:read'])]
     private string $slug;
+
+    /**
+     * @var Collection<int, Link>
+     */
+    #[ORM\OneToMany(targetEntity: Link::class, mappedBy: 'link_collection', orphanRemoval: true)]
+    private Collection $links;
+
+    public function __construct()
+    {
+        $this->links = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -136,6 +149,31 @@ class LinkCollection implements HasUserInterface
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Link>
+     */
+    public function getLinks(): Collection
+    {
+        return $this->links;
+    }
+
+    public function addLink(Link $link): static
+    {
+        if (!$this->links->contains($link)) {
+            $this->links->add($link);
+            $link->setLinkCollection($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLink(Link $link): static
+    {
+        $this->links->removeElement($link);
 
         return $this;
     }

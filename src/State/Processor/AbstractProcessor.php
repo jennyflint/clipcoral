@@ -12,12 +12,15 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @implements ProcessorInterface<mixed, void>
  */
 abstract class AbstractProcessor implements ProcessorInterface
 {
+    protected ?UserInterface $user = null;
+
     public function __construct(
         protected EntityManagerInterface $entityManager,
         protected Security $security,
@@ -28,6 +31,19 @@ abstract class AbstractProcessor implements ProcessorInterface
      * @param array<string, int> $uriVariables
      */
     abstract public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): object;
+
+    protected function getUserEntity(): User
+    {
+        if (!$this->user instanceof UserInterface) {
+            $this->user = $this->security->getUser();
+        }
+
+        if (!$this->user instanceof User) {
+            throw new UserNotFoundException();
+        }
+
+        return $this->user;
+    }
 
     /**
      * @template T of object
@@ -47,8 +63,7 @@ abstract class AbstractProcessor implements ProcessorInterface
         }
 
         if (!$id && $entity instanceof HasUserInterface) {
-            $user = $this->security->getUser();
-            $user instanceof User ? $entity->setUser($user) : throw new UserNotFoundException();
+            $entity->setUser($this->getUserEntity());
         }
 
         return $entity;
