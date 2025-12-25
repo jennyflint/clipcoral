@@ -9,6 +9,7 @@ services:
       - ./frankenphp/Caddyfile:/etc/frankenphp/Caddyfile:ro
       - ./frankenphp/conf.d/20-app.dev.ini:/usr/local/etc/php/app.conf.d/20-app.dev.ini:ro
       - ./.docker/php/xdebug.ini:/usr/local/etc/php/app.conf.d/99-xdebug.ini
+      - ./var:/app/var:rw
     environment:
       FRANKENPHP_WORKER_CONFIG: watch
       MERCURE_EXTRA_DIRECTIVES: demo
