@@ -21,6 +21,11 @@ final readonly class CurrentUserExtension implements QueryCollectionExtensionInt
 
     public function applyToCollection(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, ?Operation $operation = null, array $context = []): void
     {
+
+        if ($operation && ($operation->getExtraProperties()['bypass_user_filter'] ?? false)) {
+            return;
+        }
+
         $this->addWhere($queryBuilder);
     }
 

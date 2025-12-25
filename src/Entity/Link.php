@@ -7,6 +7,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link as MetadataLink;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
@@ -25,6 +26,18 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ApiResource(operations: [
     new Get(
         security: "is_granted('IS_OWNER', object)",
+    ),
+    new GetCollection(
+        uriTemplate: '/link-collections/{linkCollectionId}/links',
+        uriVariables: [
+            'linkCollectionId' => new MetadataLink(
+                toProperty: 'linkCollection',
+                fromClass: LinkCollection::class,
+            ),
+        ],
+        paginationItemsPerPage: 30,
+        paginationMaximumItemsPerPage: 100,
+        extraProperties: ['bypass_user_filter' => true], // Allow fetching all links in a collection regardless of user
     ),
     new Post(
         uriTemplate: '/link-collection/{linkCollectionId}/link',
