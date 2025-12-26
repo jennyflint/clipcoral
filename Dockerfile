@@ -49,6 +49,13 @@ RUN install-php-extensions pdo_pgsql
 ###< doctrine/doctrine-bundle ###
 ###< recipes ###
 
+RUN apt-get update && apt-get install -y \
+    librabbitmq-dev \
+    libssh-dev \
+    && docker-php-ext-install bcmath sockets \
+    && pecl install amqp \
+    && docker-php-ext-enable amqp
+
 COPY --link frankenphp/conf.d/10-app.ini $PHP_INI_DIR/app.conf.d/
 COPY --link --chmod=755 frankenphp/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 COPY --link frankenphp/Caddyfile /etc/frankenphp/Caddyfile
